@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\CounterEvent;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('update', function (Request $request) {
+    $request->validate([
+        'type' => ['in:increment,decrement']
+    ]);
+
+    event(new CounterEvent($request->type));
+
+    return response()->json([
+        'success' => true,
+        'message' => 'OK'
+    ]);
+});
+
+Route::view('counter', 'counter');

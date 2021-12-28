@@ -13,14 +13,7 @@
   <body>
     <div class="container">
       <div class="text-center mt-5">
-        <div>
-          <button class="btn-primary btn" onclick="send('increment')">+</button>
-          <button class="btn-primary btn" onclick="send('decrement')">-</button>
-        </div>
-
-        <div class="mt-5">
-          <a href="/counter" target="_blank">Counter</a>
-        </div>
+        <h1>Counter: <span id="counter">-</span></h1>
       </div>
     </div>
 
@@ -38,11 +31,10 @@
     <script src="{{ asset('js/app.js') }}"></script>
 
     <script>
-      function send(type) {
-        axios.post('/update', {
-          type,
-        });
-      }
+      Echo.channel('counter')
+        .listen('CounterEvent', e => {
+            document.querySelector('#counter').innerHTML = e.counter
+        })
     </script>
   </body>
 </html>
